@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "scripts": {
+    "lint": "eslint . config models public routes || true",
+    "test": "npm run lint",
+    "start": "node server.js"
+  },
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "^1.14.1",
@@ -22,5 +27,8 @@
   },
   "engines": {
     "node": "0.12.7"
+  },
+  "devDependencies": {
+    "eslint": "^1.8.0",
   }
 }
