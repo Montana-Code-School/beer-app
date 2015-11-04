@@ -19,6 +19,7 @@ router.route('/')
 
 	.post(function(req, res){
 		var name =  req.body.name;
+		var image = req.body.image;
 		var category = req.body.category;
 		var ibu = req.body.ibu;
 		var abv = req.body.abv;
@@ -27,6 +28,7 @@ router.route('/')
 		var description = req.body.description;
 		mongoose.model('Beer').create({
 			name: name,
+			image: image,
 			category: category,
 			ibu: ibu,
 			abv: abv,
@@ -61,6 +63,7 @@ router.route('/:id')
 			if(err)
 				res.send(err);
 			beer.name = req.body.name;
+			beer.image = req.body.image;
 			beer.category = req.body.category;
 			beer.ibu = req.body.ibu;
 			beer.abv = req.body.abv;

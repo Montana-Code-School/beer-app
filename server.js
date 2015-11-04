@@ -19,11 +19,16 @@ var db = require('./model/db');
 var beerModel = require ('./model/beerModel');
 var beerRoutes = require ('./routes/beerRoutes');
 
+var ratingModel = require ('./model/ratingModel');
+var rateRoutes = require ('./routes/rateRoutes');
+
+
 
 //Routes========================================================================
 
 
 app.use('/api/beer', beerRoutes);
+app.use('/api/ratings', rateRoutes);
 
 require('./config/passport')(passport);
 
@@ -48,9 +53,22 @@ app.get('/about', function(req, res) {
     res.render('pages/about');
 });
 
+app.get('/test', function(req, res) {
+    res.render('pages/test');
+});
+
+app.get('/beer_profile', function(req, res) {
+    res.render('pages/beer_profile');
+});
+
 app.get('/enter_beer', function(req, res) {
     res.render('pages/enter_beer');
 });
+
+app.get('/rate', function(req, res) {
+    res.render('pages/rate');
+});
+
 
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); 
 app.use(passport.initialize());

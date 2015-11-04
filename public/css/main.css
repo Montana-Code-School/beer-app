@@ -1,31 +1,44 @@
 h3{
 	text-transform: uppercase;		
 	font-family: "Noto",Helvetica,Arial,sans-serif;
+  font-size: 20px;
   font-weight: 700;
-  margin: 10px 0px 25px 0px;
+  letter-spacing: -1px;
+  margin: 10px 0px 15px 0px;
   padding: 0px;
-  text-align: center;
 }
 h4{
 	color: #777777;
 	font-family: "Noto",Helvetica,Arial,sans-serif;
-  font-weight: 650px;
+  font-size: 16px;
   margin: 10px 0px 25px 0px;
   padding: 0px;
-  text-align: center;
-
+}
+h4.form{
+  color: #777777;
+  font-family: "Noto",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  margin: 10px 0px 25px 0px;
+  padding: 0px;
 }
 p.brewery{
 	color: #777777;
 	font-family: "Noto",Helvetica,Arial,sans-serif;
-	text-align: center;
+/*	text-align: center;
+*/}
+p.rating{
+  color: #FFCC00;
+  font-family: "Noto",Helvetica,Arial,sans-serif;
+  font-size: 2em;
+  letter-spacing: 4px;
 }
+
 /*  NAV BAR STYLING
 */ 
 
 .navbar2 {
     position: relative;
-    min-height: 50px;
+    min-height: 170px;
     margin-bottom: 0;
     border: 1px solid transparent;
 }
@@ -126,7 +139,7 @@ p.brewery{
 
 .beer-cat {
   min-width: 10px;
-  margin: 20px 5px;
+  margin: 5px 5px 5px 5px;
   list-style: none;
   text-align: center;
   font-family: "Noto",Helvetica,Arial,sans-serif;
@@ -139,6 +152,20 @@ p.brewery{
   background-color: #222;
   border: 1px solid #dddddd;
   border-radius: 28px;
+}
+.tasting-notes {
+  min-width: 5px;
+  margin: 3px 3px 3px 3px;
+  list-style: none;
+  text-align: center;
+  font-family: "Noto",Helvetica,Arial,sans-serif;
+  font-size: 10px;
+  color:#000;
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #E0E0E0;
+  border: 1px solid #dddddd;
+  border-radius: 15px;
 }
 .beer-cat:hover {
   color: #222;  
@@ -154,10 +181,59 @@ p.brewery{
   color:#eee;
   overflow:hidden;
 }
-
+#Update {
+  float: right;
+}
 .beer-display{
-	padding:30px;
+	padding:15px;
+  text-align: center;
+  max-height: 750px;
+  margin: 5px;
 }
 .short-rule{
 	width: 25%;
+  box-shadow: 2px 2px 1px #888888;
+}
+.well-beer {
+  min-height: 20px;
+  padding: 0 0 19px 0;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.glyphicon:before {
+     visibility: visible;
+      font-size: 40px;
+      margin: 5px;
+      color: #E0E0E0;
+}
+.glyphicon.glyphicon-star-empty:checked:before {
+    font-size: 40px;
+    margin: 6px;
+    width: 30px;
+    height: 30px;
+    color: #FFCC00;
+
+}
+input[type=checkbox].glyphicon{
+     visibility: hidden;  
+     vertical-align: center;
+     width: 40px;
+     height: 40px;      
+}
+
+.star {
+    content: "&#xf251;"; 
+    font-family: "FontAwesome";
+    font-size: 4em;
+    color: #FFCC00;
+    display:inline-block;
+    margin:-2px;
+    padding: 4px 12px;
+    background-color: #e7e7e7;
+    border-color: #ddd;
 }

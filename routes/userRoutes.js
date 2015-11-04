@@ -160,5 +160,18 @@ module.exports = function(app, passport) {
     };
 };
 
+// APP GET PERMISSIONS FOR LOGGED IN USERS TO ENTER BEER
 
+// app.get('/pages/enter_beer', requireAuth, adminHandler);
+
+// function requireAuth(req, res, next){
+
+//   // check if the user is logged in
+//   if(!req.isAuthenticated()){
+//     req.session.messages = "Only admin can view this page";
+//     res.redirect('/');
+//   }
+//   next();
+// };
+// };
 
