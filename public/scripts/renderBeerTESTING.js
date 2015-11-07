@@ -1,9 +1,7 @@
 var BeerList = React.createClass({
-  handleSubmit: function(id){
+    handleSubmit: function(id){
   
       var id = id;
-
-      var tasting_notes = React.findDOMNode(this.refs.tasting_notes).value.trim();
 
       //Goal: Find highest value that has checked===true
       for(var i = 5; i >= 1; i--){
@@ -14,6 +12,7 @@ var BeerList = React.createClass({
           break;
         }
       }
+
 
      console.log(id);
 
@@ -38,37 +37,8 @@ var BeerList = React.createClass({
                   }.bind(this)
           })
   },
-    getInitialState: function(){
-        return {
-            fltr: null
-        };
-    },
 
-    toggle: function (category) {
-        this.setState({
-            fltr: category
-        })
-    },
-
-    reToggle: function (category) {
-        this.setState({
-            fltr: null
-        })
-    },
-
-    toggleRating: function(rating){
-        this.setState({
-            fltr: rating
-        })
-    },
-
-    toggleInfo: function (beerInfo) {
-        this.setState({
-            fltr: beerInfo
-        })
-    },
-
-      handleOverall: function(event) {
+    handleOverall: function(event) {
   
   
     //Uncheck all the stars
@@ -77,7 +47,9 @@ var BeerList = React.createClass({
     arr.forEach(function(arrValue) {
       var refKey = 'overall' + arrValue;
       React.findDOMNode(self.refs[refKey]).checked = false
-    })
+        console.log(refKey);
+      })
+
     
     var ratingValue = Number(event.target.value)
     switch (ratingValue) {
@@ -94,6 +66,34 @@ var BeerList = React.createClass({
     }
   },
 
+    getInitialState: function(){
+        return {
+            fltr: null
+        };
+    },
+
+    toggle: function (category) {
+        this.setState({
+            fltr: category
+        })
+    },
+
+    toggleStars: function (name) {
+    console.log(name);
+    this.setState({
+      fltr: name
+    })
+  },
+    reToggle: function (category) {
+        this.setState({
+            fltr: null
+        })
+    },
+    toggleInfo: function (beerInfo) {
+        this.setState({
+            fltr: beerInfo
+        })
+    },
     render: function() {
         var that = this;
         var beerCats = [];
@@ -114,21 +114,8 @@ var BeerList = React.createClass({
                 )
         });
 
-
-
         var beerData = this.props.data.map(function(beer){
 
-            var sum=0;
-            for(var i = 0; i < beer.ratings.length; i++){
-                var overall = beer.ratings[i].overall;
-                sum += beer.ratings[i].overall;
-
-                }
-            var average = Math.round(sum/beer.ratings.length);
-
-
-
-                            
            if (beer.category === this.state.fltr || !this.state.fltr)
                return (
                     <div className="col-sm-6 col-md-4">
@@ -145,50 +132,32 @@ var BeerList = React.createClass({
                    <p className="brewery">
                    {beer.brewery}
                    </p>
-                   <p className="rating">
-                   {average > 0 ? <i className="fa fa-star"></i> : <h3 className="rating">Not Yet Rated</h3>}
-                   {average > 1 ? <i className="fa fa-star"></i> : ''}
-                   {average > 2 ? <i className="fa fa-star"></i> : ''}
-                   {average > 3 ? <i className="fa fa-star"></i> : ''}
-                   {average > 4 ? <i className="fa fa-star"></i> : ''}
-                   {average > 5 ? <i className="fa fa-star"></i> : ''}
-                   {average > 6 ? <i className="fa fa-star"></i> : ''}
-                   </p> 
-
-
-                    <button type="button" className="btn btn-s btn-default" onClick={that.toggleRating.bind(that, beer._id)}><i className="fa fa-beer"></i>Rate</button> &nbsp;
+                   <p className="rating"><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star-half-o"></i><i className="fa fa-star-o"></i></p>
+                    <button type="button" className="btn btn-s btn-default" onClick={that.toggleStars.bind(that, beer._id)}><i className="fa fa-beer"></i> Rate</button> &nbsp;
+                    <button type="button" className="btn btn-s btn-default"><i className="fa fa-info-circle"></i> {beer.name}</button> 
                     </div>
                     </div>
                    </div>
                    </div>
                    </div>
-
                    )
-                    else if (beer._id === this.state.fltr || !this.state.fltr)
-               return (
-                    <div className="container">  
-          <div className="col-sm-3 col-md-3">
-          <div className="beer-display">
-          <div className="row">
-          <div className="well-beer">
-          <img src={beer.image} className="img-responsive"/>
-          </div>
-          </div>
-          </div>
-          </div>
-          <div className="col-sm-5 col-md-5">
-          <div className="row">
-          <h1>{beer.name}</h1>
-          <hr/>
+}.bind(this));
+
+// pulls up the stars for rating
+
+var getRatingForm = this.props.data.map(function(beer){
+    if (beer.name === this.state.fltr)
+
+        return(
+            <div>
+            {beerData}
+          <div className="container">  
+
           <form>
 
           <div className="form-group">
-          
 
-          <input type="checkbox" className="form-control" ref="tasting_notes" defaultValue=""/>
-
-
-          <h3>OverAll Rating</h3>
+          <h3>Overall Rating</h3>
           <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall1" onChange={this.handleOverall} defaultValue="1" type="checkbox" />
           <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall2" onChange={this.handleOverall} defaultValue="2" type="checkbox" />
           <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall3" onChange={this.handleOverall} defaultValue="3" type="checkbox" />
@@ -198,17 +167,13 @@ var BeerList = React.createClass({
 
 
           </div>
-          <button onClick={that.handleSubmit.bind(this, beer._id)} type="submit" className="btn btn-primary">Submit</button>
+          <button onClick={that.handleSubmit.bind(this, beer._id)} type="submit" className="btn">Submit</button>
           </form>
           </div>
           </div>
-          </div>
-
-                   )
-            }.bind(this));
-            
-
-           
+          )
+      
+    }.bind(this));
 return (
 
     <div>
@@ -216,7 +181,10 @@ return (
     <button className="beer-cat" onClick={that.reToggle}>All</button>
     {beerButtons}
     </div>                 
-    {beerData}    
+    {beerData}
+    <div>
+    {getRatingForm}
+    </div>
     </div>
 
     );
@@ -260,4 +228,4 @@ render: function() {
 }
 })
 
-React.render(<App url="/api/rating/"/>, document.getElementById("beerPosts"))
+React.render(<App url="/api/beer/"/>, document.getElementById("beerPosts") )

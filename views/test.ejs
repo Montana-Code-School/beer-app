@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <% include ./partials/head %></head>
+<body>
+
+<header>
+ <% include ./partials/header %>
+ </header>
+<div class="container">
+
+<% if (user) { %>
+                		<div id="beerForm"></div>
+		<div class="col-md-12 col-lg-12">
+			<div class="container">              
+					<div id="allBeers"></div>
+				</div>
+			</div>
+		</div>
+<% } else { %>
+                    <h4>Sorry you are not logged in</h4>
+                <% } %>
+
+</div>
+ <% include ./partials/footer %>
+
+</body>
+</html>

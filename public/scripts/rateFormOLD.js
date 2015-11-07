@@ -1,11 +1,35 @@
+// var tastingNotes = ["malty", "breadlike", "rich", "deep", "roasty", "cereal", "coffeeish", "caramelly", "toffee-like", "molasses-like", "smoky", "sweet", "autumnal","burnt cream", "oatmeal", "rustic", "layered", "piney", "citrusy", "grapefruity", "earthy", "musty", "spicy", "sharp", "bright", "fresh", "herbal", "lemony", "newly-mown lawn", "floral", "springlike", "brilliant", "minty", "pungent", "grassy"]
+
 //added a comment to the top of rateForm to force an update
 var RateForm = React.createClass({
+  
+
+
+
 
   handleSubmit: function(id){
   
       var id = id;
 
-      var tasting_notes = React.findDOMNode(this.refs.tasting_notes).value.trim();
+
+      // var tasting_notes = React.findDOMNode(this.refs["good", "bad", "ugly"]).value;
+      
+      
+
+      // var selectedNote = []
+      // for(var i = 0; i < tastingNotes.length -1; i++){
+
+
+      //   var noteKey = tastingNotes[i];
+
+      //   var domNodeNote = React.findDOMNode(this.refs[noteKey]);
+      //   alert(domNodeNote);
+      //   if (domNodeNote.checked === true){
+      //     selectedNote.push(noteKey);
+      //     alert(selectedNote);
+      //   }
+      // }
+      // // for(var i = 0; i > )
 
       //Goal: Find highest value that has checked===true
       for(var i = 5; i >= 1; i--){
@@ -16,6 +40,7 @@ var RateForm = React.createClass({
           break;
         }
       }
+
 
      console.log(id);
 
@@ -43,7 +68,8 @@ var RateForm = React.createClass({
 
     getInitialState: function(){
     return {
-      fltr: null
+      fltr: null,
+      selected: false
     };
   },  
 
@@ -68,7 +94,9 @@ var RateForm = React.createClass({
     arr.forEach(function(arrValue) {
       var refKey = 'overall' + arrValue;
       React.findDOMNode(self.refs[refKey]).checked = false
-    })
+        console.log(refKey);
+      })
+
     
     var ratingValue = Number(event.target.value)
     switch (ratingValue) {
@@ -85,9 +113,23 @@ var RateForm = React.createClass({
     }
   },
 
-render: function() {
+  handleSelect: function(event){
+    this.setState(event.target.checked = true);
+  },
+
+  render: function() {
 
     var that = this;
+
+    // var tastingNotesMap = this.props.notes.map(function(note){
+    //   return(
+    //       <div>
+    //       <input id="checkbox1" className="glyphicon glyphicon-star" ref="good" defaultValue="good" type="checkbox" /> <p> Good </p>
+    //       <input id="checkbox1" className="glyphicon glyphicon-star" ref="bad"  defaultValue="bad" type="checkbox" /><p>Bad</p>
+    //       <input id="checkbox1" className="glyphicon glyphicon-star" ref="ugly"  defaultValue="ugly" type="checkbox" /><p>ugly</p>
+    //       </div>)
+
+    // }.bind(this));
 
     var getBeerData = this.props.data.map(function(beer){
     if (beer.name === this.state.fltr)
@@ -110,12 +152,8 @@ render: function() {
           <form>
 
           <div className="form-group">
-          
 
-          <input type="checkbox" className="form-control" ref="tasting_notes" defaultValue=""/>
-
-
-          <h3>Over All Rating</h3>
+          <h3>Overall Rating</h3>
           <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall1" onChange={this.handleOverall} defaultValue="1" type="checkbox" />
           <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall2" onChange={this.handleOverall} defaultValue="2" type="checkbox" />
           <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall3" onChange={this.handleOverall} defaultValue="3" type="checkbox" />
@@ -125,7 +163,7 @@ render: function() {
 
 
           </div>
-          <button onClick={that.handleSubmit.bind(this, beer._id)} type="submit" className="btn btn-primary">Submit</button>
+          <button onClick={that.handleSubmit.bind(this, beer._id)} type="submit" className="btn">Submit</button>
           </form>
           </div>
           </div>
@@ -204,3 +242,10 @@ var App = React.createClass({
 })
 
 React.render(<App url="/api/rating/"/>, document.getElementById('rateForm'));
+
+
+          // <button className="tasting-notes" ref="tasting_note" defaultValue="coffeeish">Coffeeish</button>
+          // <button className="tasting-notes" ref="tasting_note" defaultValue="caramelly">Caramelly</button>
+          // <button className="tasting-notes" ref="tasting_note" defaultValue="fresh">Fresh</button>
+          // <button className="tasting-notes" ref="tasting_note" defaultValue="herbal">Herbal</button>
+          // <button className="tasting-notes" ref="tasting_note" defaultValue="earthy">Earthy</button>

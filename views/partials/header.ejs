@@ -14,11 +14,43 @@
          <!--        <li>
                     <a href="#"><button type="button" class="btn-menu">Rate</button></a>
                 </li> -->
-                                <li>
-                    <a href="/enter_beer"><button type="button" class="btn-menu">Enter Beer</button></a>
-                </li>
-                </li>
-            </ul>
-        </div>
+                <li> <a href="/enter_beers"><button type="button" class="btn-menu">Enter Beer</button></a></li>
+                <li> <a href="/logout"> <button type="button" class="btn-menu">Logout</button></a></li>
+                <li>  <a><button type="button" class="btn-menu" data-toggle="modal" data-target="#myModal">Login</button></a></li>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" align="left">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="form modal-title" id="myModalLabel"><span class="fa fa-sign-in"></span> Login</h4>
+                </div>
+                <div class="modal-body">
+
+
+                    <!-- LOGIN FORM -->
+                    <form action="/login" method="post">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" class="form-control" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+
+                        <button type="submit" class="btn btn-warning btn-md">Login</button>
+                        <a href="/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
+                        <a href="/auth/twitter" class="btn btn-info"><span class="fa fa-twitter"></span> Twitter</a>
+                    </form><br>
+                        <p>Need an account? <a href="/signup">Signup</a></p>
+
+                </div>
+            </div>
+
+
+            </li>
+        </ul>
     </div>
+</div>
 </nav>

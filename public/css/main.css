@@ -7,6 +7,16 @@ h3{
   margin: 10px 0px 15px 0px;
   padding: 0px;
 }
+h3.rating{
+  text-transform: uppercase;    
+  font-family: "Noto",Helvetica,Arial,sans-serif;
+  font-size: 20px;
+  color: #FFCC00;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin: 10px 0px 15px 0px;
+  padding: 4px;
+}
 h4{
 	color: #777777;
 	font-family: "Noto",Helvetica,Arial,sans-serif;
@@ -28,7 +38,7 @@ p.brewery{
 */}
 p.rating{
   color: #FFCC00;
-  font-family: "Noto",Helvetica,Arial,sans-serif;
+  font-family: "FontAwesome";
   font-size: 2em;
   letter-spacing: 4px;
 }
@@ -153,25 +163,13 @@ p.rating{
   border: 1px solid #dddddd;
   border-radius: 28px;
 }
-.tasting-notes {
-  min-width: 5px;
-  margin: 3px 3px 3px 3px;
-  list-style: none;
-  text-align: center;
-  font-family: "Noto",Helvetica,Arial,sans-serif;
-  font-size: 10px;
-  color:#000;
-  display: inline-block;
-  padding: 5px 14px;
-  background-color: #E0E0E0;
-  border: 1px solid #dddddd;
-  border-radius: 15px;
-}
-.beer-cat:hover {
-  color: #222;  
-  background-color: #999;
-}
 
+.beer-cat:hover {
+  background-color: #FFCC00;
+}
+.beer-cat:active {
+  background-color: #FFCC00;
+}
 .container-full {
   margin: 0 auto;
   margin-bottom: 17px;
@@ -187,6 +185,7 @@ p.rating{
 .beer-display{
 	padding:15px;
   text-align: center;
+  min-height: 750px;
   max-height: 750px;
   margin: 5px;
 }
@@ -211,7 +210,7 @@ p.rating{
       margin: 5px;
       color: #E0E0E0;
 }
-.glyphicon.glyphicon-star-empty:checked:before {
+.glyphicon.glyphicon-star:checked:before {
     font-size: 40px;
     margin: 6px;
     width: 30px;
@@ -224,6 +223,34 @@ input[type=checkbox].glyphicon{
      vertical-align: center;
      width: 40px;
      height: 40px;      
+}
+.flatRoundedCheckbox input[type=checkbox]:checked ~ div {
+
+  background-color: #FFCC00
+}
+
+.btn.tasting-notes {
+  min-width: 5px;
+  margin: 3px 3px 3px 3px;
+  list-style: none;
+  text-align: center;
+  font-family: "Noto",Helvetica,Arial,sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  color:#000;
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #E0E0E0;
+  border: 1px solid #dddddd;
+  border-radius: 15px;
+}
+.btn.tasting-notes:active:checked{
+  color: white;
+  background-color: #FFCC00;
+ }
+
+ input[type=checkbox]{
+     visibility: hidden; 
 }
 
 .star {

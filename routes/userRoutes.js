@@ -53,6 +53,13 @@ module.exports = function(app, passport) {
         });
     });
 
+        app.get('/enter_beers', isLoggedIn, function(req, res) {
+        res.render('test.ejs', {
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+
+
     // =====================================
     // FACEBOOK ROUTES =====================
     // =====================================
@@ -156,6 +163,7 @@ module.exports = function(app, passport) {
             return next();
 
         // if they aren't redirect them to the home page
+        console.log("You must be logged in")
         res.redirect('/');
     };
 };
