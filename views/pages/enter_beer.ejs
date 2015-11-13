@@ -9,18 +9,28 @@
 		<% include ../partials/header %>
 	</header>
 	<div class="container">              
-
-		<div id="beerForm"></div>
-		<div class="col-md-12 col-lg-12">
-			<div class="container">              
+		<% if (user.local.email === "suziequz@msn.com") { %>
+			<div id="beerForm"></div>
+			<div class="col-md-4 col-lg-4">
+				<div class="container">              
 					<div id="allBeers"></div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<footer>
-		<% include ../partials/footer %>
-	</footer>
-	
-</body>
-</html>
+		<% } else { %>
+			<div class="container">
+			<div class="jumbotron alert">
+			<h1><i class="fa fa-sign-in"></i></h1>
+			<h2>You must be logged-in as the Tap Room's Owner to view this page.</h2></br>
+			<ul class="list-unstyled">
+			<li>  <a><button type="button" class="btn-menu" data-toggle="modal" data-target="#loginAdminModal">Login</button></a></li>
+			</ul>
+			</div>
+			</div>
+			<% } %>	</div>
+			<footer>
+				<% include ../partials/footer %>
+			</footer>
+
+		</body>
+		</html>

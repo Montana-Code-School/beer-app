@@ -8,32 +8,44 @@
     <header>
         <% include ../partials/header %>
     </header>
-    <div class="jumbotron">
-        <div align="center">
-            <a href="#beers"><button class="ghost-button-semi-transparent"> Drink Beer </button></a>
-            <button class="ghost-button-semi-transparent" data-toggle="modal" data-target="#myModal"> Log In </button>
- 
-     </div>
-    </div>
+    <% if (!user) { %>        
+        <div class="jumbotronHomePage">
+            <div align="center">
 
-</div>
-</div>
+                <a href="/tap_rooms"><button class="ghost-button-semi-transparent"> Find My Tap Room </button></a>
+                <button class="ghost-button-semi-transparent" data-toggle="modal" data-target="#loginModal"> Log In </button>
+                <% } else { %>
 
-<div class="container spacer">
-    <main>
-        <div class="row" id="beers">
+                    <% } %>
+                </div>
+            </div>
 
-            <div id="beerPosts"></div>
-            
-            
         </div>
+    </div>
+    <div class="container">
+        <div class="container spacer">
+            <main>
 
-    </main>
-</div>
+                <% if (!user) { %>
+                    <div class="row" id="beers">
+                        <div id="beerPostsLoggedOut"></div>
+                    </div>
 
-<footer>
-    <% include ../partials/footer %>
-</footer>
 
-</body>
-</html>
+                    <% } else { %>
+                        <div class="row" id="beers">
+                            <div id="beerPosts"></div>
+
+                            
+                        </div>
+                        <% } %> 
+
+                    </main>
+                </div> 
+
+                <footer>
+                    <% include ../partials/footer %>
+                </footer>
+
+            </body>
+            </html>

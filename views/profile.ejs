@@ -2,93 +2,108 @@
 <html>
 <head>
     <% include ./partials/head %></head>
-<body>
+    <body>
 
-<header>
- <% include ./partials/header %>
- </header>
-<div class="container">
+        <header>
+           <% include ./partials/header %>
+       </header>
+       <div class="container">
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <div class="page-header text-center">
+            <div id="users"></div>
+            <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+                           
+
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
+        </div>
 
-    <div class="row">
+            <table>
+ <!--             //    <% 
+//                 for(var i=0; i < userBeer.length; i++) { for(var r = 0; r < userBeer[i].ratings.length; r++) { 
+//                 var sum=0;
+//                 for(var i = 0; i < userBeer[i].ratings[r].length; i++){
+//                     var overall =userBeer[i].ratings[r].overall;
+//                     sum += userBeer[i].ratings[r].overall;
 
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
+//                 }
+//                 var average = Math.round(sum/userBeer[i].ratings[r].length); 
+//                 (console.log(overall))
+//             }
+//         }
+                %>
+ -->
 
-                <% if (user.local.email) { %>
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
+
                     
-                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
-                <% } else { %>
-                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
-                <% } %>
+                    <% for(var i=0; i < userBeer.length; i++) {  
+                        var beerName = [];
+                        if(beerName.indexOf(userBeer[i].name) === -1) {
+                            beerName.push(userBeer[i].name);
 
-            </div>
-        </div>
+                            var sum = 0;
+                            for(var r = 0; r < userBeer[i].ratings.length; r++) { 
 
-        <!-- FACEBOOK INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+    
+                            var overall = userBeer[i].ratings[r].overall;
+                            sum +=  overall;
+                            var average = Math.round(sum/userBeer[i].ratings.length);
 
-                <!-- check if the user has this token (is the user authenticated with this social account) -->
-                <% if (user.facebook.token) { %>
-                    <p>
-                        <strong>id</strong>: <%= user.facebook.id %><br>
-                        <strong>token</strong>: <%= user.facebook.token %><br>
-                        <strong>email</strong>: <%= user.facebook.email %><br>
-                        <strong>name</strong>: <%= user.facebook.name %><br>
-                    </p>
+                            console.log(userBeer[i].name)
+                            console.log(userBeer[i].ratings[r].overall) 
 
-                    <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
-                <% } else { %>
-                    <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>
-                <% } %>
+                            } %>
+                            <div class="col-sm-6 col-md-3">
+                    <div class="location-display">
+                    <div class="row">
+                   <div class="well-beer-sm">
+                   <img src="<%= userBeer[i].image %>" class="img-responsive"/>
+                   <div class="caption">
+                   <h4 class="profile"><%= beerName %></h4><br/>
+                   <p class="brewery"><%= userBeer[i].category %></p>
 
-            </div>
-        </div>
-    </div>
-    <div class="row">
+                   <p class="brewery">
+                   <%= userBeer[i].abv > 0 ? ' ABV ' + userBeer[i].abv + '% / ': ''%> <%= userBeer[i].ibu%><%= userBeer[i].ibu > 0 ? ' IBU / ' : ''%><%= userBeer[i].location%>
+                   </p>
+                   <hr class="short-rule"/>                        
+                   <p class="brewery">
+                   <%=userBeer[i].brewery%>
+                   <p class="rating">
+                   <% if (average === 1){ %>
+                   <i class="fa fa-star"></i>
+                   <% } if (average === 2){ %>
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    <% } if (average === 3){ %>
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    <% } if (average === 4){ %>
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    <% } if (average === 5){ %>
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    <% } %>
+                    
 
-        <!-- TWITTER INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3 class="text-info"><span class="fa fa-twitter"></span> Twitter</h3>
+                   </p>
+                   </p>
+                   </div>
+                   </div>
+                   </div>
+                   </div>
+                   </div>                   
 
-                <% if (user.twitter.token) { %>
-                    <p>
-                        <strong>id</strong>: <%= user.twitter.id %><br>
-                        <strong>token</strong>: <%= user.twitter.token %><br>
-                        <strong>display name</strong>: <%= user.twitter.displayName %><br>
-                        <strong>username</strong>: <%= user.twitter.username %>
-                    </p>
 
-                    <a href="/unlink/twitter" class="btn btn-info">Unlink</a>
-                <% } else { %>
-                    <a href="/connect/twitter" class="btn btn-info">Connect Twitter</a>
-                <% } %>
 
-            </div>
-        </div>
 
-      
-    </div>
+                   <%
+                            console.log(average) 
 
-    <div class="text-center">
-        <p>A demo by <a href="http://scotch.io">Scotch</a>.</p>
-        <p>Visit the <a href="http://scotch.io/tutorials/javascript/easy-node-authentication-setup-and-local">tutorial</a>.</p>
-    </div>
+                            } } %>
 
-</div>
-</body>
-</html>
+
+                           </table>
+                       </div>
+
+
+                                        </div>
+                                        <% include ./partials/footer %></head>
+
+                                    </body>
+                                    </html>

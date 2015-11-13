@@ -1,7 +1,9 @@
-var BeerList = React.createClass({
-    handleSubmit: function(id){
+var BeerListLoggedOut = React.createClass({
+  handleSubmit: function(id){
   
       var id = id;
+
+      var tasting_notes = React.findDOMNode(this.refs.tasting_notes).value.trim();
 
       //Goal: Find highest value that has checked===true
       for(var i = 5; i >= 1; i--){
@@ -12,7 +14,6 @@ var BeerList = React.createClass({
           break;
         }
       }
-
 
      console.log(id);
 
@@ -29,7 +30,7 @@ var BeerList = React.createClass({
               type:'POST',
                   success: function(response){
                   console.log("posting data!",data, response)
-                  document.location='/'
+                  document.location='/verified'
                   }.bind(this),
                   error: function(xhr, status, err){
                       console.log("not posting data!")
@@ -37,8 +38,37 @@ var BeerList = React.createClass({
                   }.bind(this)
           })
   },
+    getInitialState: function(){
+        return {
+            fltr: null
+        };
+    },
 
-    handleOverall: function(event) {
+    toggle: function (category) {
+        this.setState({
+            fltr: category
+        })
+    },
+
+    reToggle: function (category) {
+        this.setState({
+            fltr: null
+        })
+    },
+
+    toggleRating: function(rating){
+        this.setState({
+            fltr: rating
+        })
+    },
+
+    toggleInfo: function (beerInfo) {
+        this.setState({
+            fltr: beerInfo
+        })
+    },
+
+      handleOverall: function(event) {
   
   
     //Uncheck all the stars
@@ -47,9 +77,7 @@ var BeerList = React.createClass({
     arr.forEach(function(arrValue) {
       var refKey = 'overall' + arrValue;
       React.findDOMNode(self.refs[refKey]).checked = false
-        console.log(refKey);
-      })
-
+    })
     
     var ratingValue = Number(event.target.value)
     switch (ratingValue) {
@@ -66,34 +94,6 @@ var BeerList = React.createClass({
     }
   },
 
-    getInitialState: function(){
-        return {
-            fltr: null
-        };
-    },
-
-    toggle: function (category) {
-        this.setState({
-            fltr: category
-        })
-    },
-
-    toggleStars: function (name) {
-    console.log(name);
-    this.setState({
-      fltr: name
-    })
-  },
-    reToggle: function (category) {
-        this.setState({
-            fltr: null
-        })
-    },
-    toggleInfo: function (beerInfo) {
-        this.setState({
-            fltr: beerInfo
-        })
-    },
     render: function() {
         var that = this;
         var beerCats = [];
@@ -108,14 +108,45 @@ var BeerList = React.createClass({
 
         })
 
-        var beerButtons = beerCats.map(function(category){
+
+        var beerButtons = beerCats.sort().map(function(category){
             return (
                 <button className="beer-cat" onClick={that.toggle.bind(that, category)}>{category}</button>
                 )
         });
 
-        var beerData = this.props.data.map(function(beer){
+        var beerSort = this.props.data.sort(function(a, b){
+           var x = a.name.toLowerCase(), y = b.name.toLowerCase();
+           return x < y ? -1 : x > y ? 1 : 0;
+           });
 
+        var beerData = beerSort.map(function(beer){
+
+            var sum=0;
+            for(var i = 0; i < beer.ratings.length; i++){
+                var overall = beer.ratings[i].overall;
+                sum += beer.ratings[i].overall;
+            var average = sum/beer.ratings.length;
+
+                }
+
+            var beerAverage = [];
+            this.props.data.map(function(beer){
+            if(average >= 0) {
+                beerAverage.push(average);
+                
+            } else {
+                beerAverage.push('Not Yet Rated')
+            }
+            // return beerCats [beer.category]
+
+        })
+            var allAverages = beerAverage[0];
+
+            
+            
+            console.log(allAverages)
+                            
            if (beer.category === this.state.fltr || !this.state.fltr)
                return (
                     <div className="col-sm-6 col-md-4">
@@ -132,48 +163,28 @@ var BeerList = React.createClass({
                    <p className="brewery">
                    {beer.brewery}
                    </p>
-                   <p className="rating"><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star-half-o"></i><i className="fa fa-star-o"></i></p>
-                    <button type="button" className="btn btn-s btn-default" onClick={that.toggleStars.bind(that, beer._id)}><i className="fa fa-beer"></i> Rate</button> &nbsp;
-                    <button type="button" className="btn btn-s btn-default"><i className="fa fa-info-circle"></i> {beer.name}</button> 
+                   <p className="rating">
+                   {average > 0 ? <i className="fa fa-star"></i> : ''}
+                   {average > 1 ? <i className="fa fa-star"></i> : ''}
+                   {average > 2 ? <i className="fa fa-star"></i> : ''}
+                   {average > 3 ? <i className="fa fa-star"></i> : ''}
+                   {average > 4 ? <i className="fa fa-star"></i> : ''}
+                   {average > 5 ? <i className="fa fa-star"></i> : ''}
+                   </p> 
+
+                    <button type="button" className="btn btn-s btn-default" data-toggle="modal" data-target="#loginRateModal"><i className="fa fa-beer"></i>&nbsp;Rate</button>
                     </div>
                     </div>
                    </div>
                    </div>
                    </div>
+
                    )
-}.bind(this));
 
-// pulls up the stars for rating
+            }.bind(this));
+            
 
-var getRatingForm = this.props.data.map(function(beer){
-    if (beer.name === this.state.fltr)
-
-        return(
-            <div>
-            {beerData}
-          <div className="container">  
-
-          <form>
-
-          <div className="form-group">
-
-          <h3>Overall Rating</h3>
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall1" onChange={this.handleOverall} defaultValue="1" type="checkbox" />
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall2" onChange={this.handleOverall} defaultValue="2" type="checkbox" />
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall3" onChange={this.handleOverall} defaultValue="3" type="checkbox" />
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall4" onChange={this.handleOverall} defaultValue="4" type="checkbox" />
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall5" onChange={this.handleOverall} defaultValue="5" type="checkbox" />
-
-
-
-          </div>
-          <button onClick={that.handleSubmit.bind(this, beer._id)} type="submit" className="btn">Submit</button>
-          </form>
-          </div>
-          </div>
-          )
-      
-    }.bind(this));
+           
 return (
 
     <div>
@@ -181,10 +192,7 @@ return (
     <button className="beer-cat" onClick={that.reToggle}>All</button>
     {beerButtons}
     </div>                 
-    {beerData}
-    <div>
-    {getRatingForm}
-    </div>
+    {beerData}    
     </div>
 
     );
@@ -222,10 +230,10 @@ componentDidMount: function(){
 render: function() {
     return (
         <div>
-        <BeerList data={this.state.data} url="/api/rating/"/>
+        <BeerListLoggedOut data={this.state.data} url="/api/rating/"/>
         </div>
         )
 }
 })
 
-React.render(<App url="/api/beer/"/>, document.getElementById("beerPosts") )
+React.render(<App url="/api/beer/"/>, document.getElementById("beerPostsLoggedOut"))

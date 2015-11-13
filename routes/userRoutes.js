@@ -1,13 +1,33 @@
-// app/routes.js
+var Beer = require('../model/beerModel');
+var mongoose = require('mongoose');
+
 module.exports = function(app, passport) {
 
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
-        res.render('index.ejs'); // load the index.ejs file
-    });
+        res.render('./pages/verify', {
+            user : req.user
+        }); // load the index.ejs file
+    }); 
+        app.get('/test', function(req, res) {
+        res.render('test', {
+            user : req.user
+        }); // load the index.ejs file
+    }); 
 
+    app.get('/tap_rooms', function(req, res) {
+        res.render('./pages/tap_rooms', {
+            user : req.user
+        }); // load the index.ejs file
+    });
+     
+    app.get('/dram_shop', function(req, res) {
+        res.render('./pages/index', {
+            user : req.user
+        }); // load the index.ejs file
+    }); 
     // =====================================
     // LOGIN ===============================
     // =====================================
@@ -17,13 +37,31 @@ module.exports = function(app, passport) {
         // render the page and pass in any flash data if it exists
         res.render('login.ejs', { message: req.flash('loginMessage') });
     });
+    app.get('/loginAdmin', function(req, res) {
+
+        // render the page and pass in any flash data if it exists
+        res.render('login.ejs', { message: req.flash('loginMessage') });
+    });
+
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/dram_shop', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+
+    app.post('/loginAdmin', passport.authenticate('local-login', {
+        successRedirect : '/enter_beer', // redirect to the secure profile section
+        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
+    // middleware 
+    app.use(function (req, res, next) {
+      res.locals.login = req.isAuthenticated();
+      next();
+    });
 
     // =====================================
     // SIGNUP ==============================
@@ -37,7 +75,7 @@ module.exports = function(app, passport) {
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -47,18 +85,29 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, function(req, res) {
+    app.get('/profile', isLoggedIn, function(req, res) { 
+         mongoose.model('Beer').find({
+            "ratings.user_id": req.user._id 
+        }, function(err, beer){
         res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
+            user : req.user, 
+            userBeer: beer
+        })
         });
     });
 
-        app.get('/enter_beers', isLoggedIn, function(req, res) {
-        res.render('test.ejs', {
+
+    app.get('/enter_beer', isLoggedIn, function(req, res) {
+        res.render('./pages/enter_beer', {
             user : req.user // get the user out of session and pass to template
         });
     });
-
+    
+    // app.get('/verifed', isLoggedIn, function(req, res) {
+    //     res.render('./pages/index', {
+    //         user : req.user // get the user out of session and pass to template
+    //     });
+    // });    
 
     // =====================================
     // FACEBOOK ROUTES =====================
@@ -70,7 +119,7 @@ module.exports = function(app, passport) {
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
             successRedirect : '/profile',
-            failureRedirect : '/'
+            failureRedirect : '/dram_shop'
         }));
 
     // route for logging out
@@ -89,7 +138,7 @@ module.exports = function(app, passport) {
     app.get('/auth/twitter/callback',
         passport.authenticate('twitter', {
             successRedirect : '/profile',
-            failureRedirect : '/'
+            failureRedirect : '/dram_shop'
         }));
 
     // locally --------------------------------
@@ -111,7 +160,7 @@ module.exports = function(app, passport) {
         app.get('/connect/facebook/callback',
             passport.authorize('facebook', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/dram_shop'
             }));
 
     // twitter --------------------------------
@@ -123,7 +172,7 @@ module.exports = function(app, passport) {
         app.get('/connect/twitter/callback',
             passport.authorize('twitter', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/dram_shop'
             }));
 
         // local -----------------------------------
@@ -163,23 +212,9 @@ module.exports = function(app, passport) {
             return next();
 
         // if they aren't redirect them to the home page
-        console.log("You must be logged in")
-        res.redirect('/');
+        res.redirect('/dram_shop');
     };
 };
 
-// APP GET PERMISSIONS FOR LOGGED IN USERS TO ENTER BEER
 
-// app.get('/pages/enter_beer', requireAuth, adminHandler);
-
-// function requireAuth(req, res, next){
-
-//   // check if the user is logged in
-//   if(!req.isAuthenticated()){
-//     req.session.messages = "Only admin can view this page";
-//     res.redirect('/');
-//   }
-//   next();
-// };
-// };
 

@@ -7,6 +7,7 @@ var User       = require('../model/user');
 
 // load the auth variables
 var configAuth = require('./auth');
+var hackUser = require('../config/hackUser');
 
 module.exports = function(passport) {
 
@@ -98,6 +99,7 @@ module.exports = function(passport) {
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
             // all is well, return successful user
+            hackUser.id = user._id;
             return done(null, user);
         });
 

@@ -4,7 +4,6 @@ var BeerList = React.createClass({
       var id = id;
 
       var tasting_notes = React.findDOMNode(this.refs.tasting_notes).value.trim();
-
       //Goal: Find highest value that has checked===true
       for(var i = 5; i >= 1; i--){
         var refKey = "overall"+i;
@@ -15,7 +14,6 @@ var BeerList = React.createClass({
         }
       }
 
-     console.log(id);
 
       if(!overall){
         return;
@@ -24,13 +22,13 @@ var BeerList = React.createClass({
       var data = ({tasting_notes: tasting_notes, overall: overall});
 
           $.ajax({
-              url: this.props.url + 'beers/' +id + '/rating',
+              url: this.props.url + 'beers/' + id + '/rating',
               dataType: 'json',
               data: data,
               type:'POST',
                   success: function(response){
                   console.log("posting data!",data, response)
-                  document.location='/'
+                  document.location='/dram_shop'
                   }.bind(this),
                   error: function(xhr, status, err){
                       console.log("not posting data!")
@@ -108,25 +106,26 @@ var BeerList = React.createClass({
 
         })
 
-        var beerButtons = beerCats.map(function(category){
+        var beerButtons = beerCats.sort().map(function(category){
             return (
                 <button className="beer-cat" onClick={that.toggle.bind(that, category)}>{category}</button>
                 )
         });
 
+        var beerSort = this.props.data.sort(function(a, b){
+           var x = a.name.toLowerCase(), y = b.name.toLowerCase();
+           return x < y ? -1 : x > y ? 1 : 0;
+           });
 
-
-        var beerData = this.props.data.map(function(beer){
+        var beerData = beerSort.map(function(beer){
 
             var sum=0;
             for(var i = 0; i < beer.ratings.length; i++){
                 var overall = beer.ratings[i].overall;
-                sum += beer.ratings[i].overall;
+                sum += overall;
 
                 }
             var average = Math.round(sum/beer.ratings.length);
-
-
 
                             
            if (beer.category === this.state.fltr || !this.state.fltr)
@@ -146,7 +145,7 @@ var BeerList = React.createClass({
                    {beer.brewery}
                    </p>
                    <p className="rating">
-                   {average > 0 ? <i className="fa fa-star"></i> : <h3 className="rating">Not Yet Rated</h3>}
+                   {average > 0 ? <i className="fa fa-star"></i> : ''}
                    {average > 1 ? <i className="fa fa-star"></i> : ''}
                    {average > 2 ? <i className="fa fa-star"></i> : ''}
                    {average > 3 ? <i className="fa fa-star"></i> : ''}
@@ -156,7 +155,7 @@ var BeerList = React.createClass({
                    </p> 
 
 
-                    <button type="button" className="btn btn-s btn-default" onClick={that.toggleRating.bind(that, beer._id)}><i className="fa fa-beer"></i>Rate</button> &nbsp;
+                    <button type="button" className="btn btn-s btn-default" onClick={that.toggleRating.bind(that, beer._id)}><i className="fa fa-beer"></i>&nbsp;Rate</button> 
                     </div>
                     </div>
                    </div>
@@ -165,47 +164,46 @@ var BeerList = React.createClass({
 
                    )
                     else if (beer._id === this.state.fltr || !this.state.fltr)
-               return (
-                    <div className="container">  
-          <div className="col-sm-3 col-md-3">
-          <div className="beer-display">
-          <div className="row">
-          <div className="well-beer">
-          <img src={beer.image} className="img-responsive"/>
-          </div>
-          </div>
-          </div>
-          </div>
-          <div className="col-sm-5 col-md-5">
-          <div className="row">
-          <h1>{beer.name}</h1>
-          <hr/>
-          <form>
+                    return (
+                    <div className="col-sm-6 col-md-4">
+                    <div className="beer-display">
+                    <div className="row">
+                   <div className="well-beer">
+                   <img src={beer.image} className="img-responsive"/>
+                   <div className="caption">
+                   <h3>{beer.name}</h3><br/>
+                   <h4>
+                   {beer.abv > 0 ? ' ABV ' + beer.abv + '% / ': ''} {beer.ibu}{beer.ibu > 0 ? ' IBU / ' : ''}{beer.location}
+                   </h4>
+                   <hr className="short-rule"/>                        
+                   <p className="brewery">
+                   {beer.brewery}
+                   </p>
+                   <form>
 
-          <div className="form-group">
+                    <div className="form-group">
           
 
-          <input type="checkbox" className="form-control" ref="tasting_notes" defaultValue=""/>
+                    <input type="checkbox" className="form-control" ref="tasting_notes" defaultValue=""/>
+
+                    <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall1" onChange={this.handleOverall} defaultValue="1" type="checkbox" />
+                    <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall2" onChange={this.handleOverall} defaultValue="2" type="checkbox" />
+                    <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall3" onChange={this.handleOverall} defaultValue="3" type="checkbox" />
+                    <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall4" onChange={this.handleOverall} defaultValue="4" type="checkbox" />
+                    <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall5" onChange={this.handleOverall} defaultValue="5" type="checkbox" />
+                    
 
 
-          <h3>OverAll Rating</h3>
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall1" onChange={this.handleOverall} defaultValue="1" type="checkbox" />
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall2" onChange={this.handleOverall} defaultValue="2" type="checkbox" />
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall3" onChange={this.handleOverall} defaultValue="3" type="checkbox" />
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall4" onChange={this.handleOverall} defaultValue="4" type="checkbox" />
-          <input id="checkbox1" className="glyphicon glyphicon-star" ref="overall5" onChange={this.handleOverall} defaultValue="5" type="checkbox" />
-
-
-
-          </div>
-          <button onClick={that.handleSubmit.bind(this, beer._id)} type="submit" className="btn btn-primary">Submit</button>
-          </form>
-          </div>
-          </div>
-          </div>
-
-                   )
-            }.bind(this));
+                    </div>
+                    <button onClick={that.handleSubmit.bind(this, beer._id)} type="submit" className="btn btn-s btn-default"><i className="fa fa-beer"></i> Rate</button>
+                    </form>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                             )
+                      }.bind(this));
             
 
            

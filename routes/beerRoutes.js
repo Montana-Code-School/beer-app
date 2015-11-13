@@ -4,10 +4,9 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var Beer = require('../model/beerModel');
 
-router.use(bodyParser.urlencoded({ extended: true }));
+module.exports = function(app, passport){
 
-router.route('/')
-	.get(function(req, res){
+app.get('/api/beer/', function(req, res){
 		mongoose.model('Beer').find({}, function(err, beer){
 			if(err){
 				return console.log('err');
@@ -15,13 +14,11 @@ router.route('/')
 				res.json(beer);
 			}
 		});
-	})
+	});
 
-	.post(function(req, res){
+app.post('/api/beer/', function(req, res){
 
 		var newBeer = req.body; //{name:..., image:...}
-
-
 		mongoose.model('Beer').create(newBeer,
 		function(err, beer){
 			if(err){
@@ -34,8 +31,7 @@ router.route('/')
 
 	});
 
-router.route('/:id')
-	.get(function(req, res) {
+app.get('/api/beer/:id', function(req, res) {
 		mongoose.model('Beer').findById({
 			_id: req.params.id
 		}, function(err, beer) {
@@ -45,7 +41,7 @@ router.route('/:id')
 		});
 	})
 
-	.put(function(req, res) {
+app.put('/api/beer/:id', function(req, res) {
 		mongoose.model('Beer').findById(req.params.id, function(err, beer){
 			if(err)
 				res.send(err);
@@ -71,7 +67,7 @@ router.route('/:id')
 		});
 	})
 
-	.delete(function(req, res) {
+app.delete('/api/beer/:id', function(req, res) {
 		mongoose.model('Beer').remove({
 			_id: req.params.id
 		}, function(err, beer) {
@@ -81,4 +77,4 @@ router.route('/:id')
 		});
 	});
 
-module.exports = router;
+}

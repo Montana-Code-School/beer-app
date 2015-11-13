@@ -17,21 +17,14 @@ var session      = require('express-session');
 var db = require('./model/db');
 
 var beerModel = require ('./model/beerModel');
-var beerRoutes = require ('./routes/beerRoutes');
 
-var ratingRoutes = require ('./routes/ratingRoutes');
-
-var userRoutes = require ('./routes/userRoutes')
 
 
 
 //Routes========================================================================
 
 
-app.use('/api/beer', beerRoutes);
-app.use('/api/rating', ratingRoutes);
-app.use('/api/users', userRoutes);
-
+// app.use('/api/users', getUsersRoutes);
 
 require('./config/passport')(passport);
 
@@ -44,34 +37,6 @@ app.use(bodyParser());
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-// use res.render to load up an ejs view file
-
-// index page 
-app.get('/', function(req, res) {
-    res.render('pages/index');
-});
-
-// about page 
-app.get('/about', function(req, res) {
-    res.render('pages/about');
-});
-
-app.get('/test', function(req, res) {
-    res.render('/test');
-});
-
-app.get('/beer_profile', function(req, res) {
-    res.render('pages/beer_profile');
-});
-
-app.get('/enter_beer', function(req, res) {
-    res.render('pages/enter_beer');
-});
-
-app.get('/rate', function(req, res) {
-    res.render('pages/rate');
-});
-
 
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); 
 app.use(passport.initialize());
@@ -79,6 +44,8 @@ app.use(passport.session());
 app.use(flash()); 
 
 require('./routes/userRoutes.js')(app, passport);
+require ('./routes/beerRoutes')(app, passport);
+require ('./routes/ratingRoutes')(app, passport);
 
 app.listen(port);
 console.log('9090 is the magic port');

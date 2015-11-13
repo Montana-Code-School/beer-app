@@ -1,28 +1,19 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <% include ./partials/head %></head>
+    <% include ./partials/head %>
+</head>
 <body>
 
-<header>
- <% include ./partials/header %>
- </header>
-<div class="container">
+    <header>
+    <% include ./partials/header %>
+    </header>
+<h1> TESTING </h1>
 
-<% if (user) { %>
-                		<div id="beerForm"></div>
-		<div class="col-md-12 col-lg-12">
-			<div class="container">              
-					<div id="allBeers"></div>
-				</div>
-			</div>
-		</div>
-<% } else { %>
-                    <h4>Sorry you are not logged in</h4>
-                <% } %>
+<footer>
 
-</div>
- <% include ./partials/footer %>
+    <% include ./partials/footer %>
+</footer>
 
 </body>
 </html>
